@@ -63,6 +63,12 @@ homebrew_installed_packages:
   - wrk
   - zsh-history-substring-search
 
+
+  - tmux
+  - jq
+
+
+
 homebrew_taps:
   - homebrew/core
   - homebrew/cask
@@ -81,6 +87,15 @@ homebrew_cask_apps:
   - sublime-text
   - transmit
   - vagrant
+  
+  - google-cloud-sdk
+  - iterm2
+  - ngrok
+  - visual-studio-code
+  - vlc
+  - zoom
+  - postico
+
 
 # See `geerlingguy.mas` role documentation for usage instructions.
 mas_installed_apps: []
