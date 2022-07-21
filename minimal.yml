@@ -1,0 +1,156 @@
+---
+- hosts: all
+
+  vars_files:
+    - default.minimal-config.yml
+
+  pre_tasks:
+    - name: Include playbook configuration.
+      include_vars: "{{ item }}"
+      with_fileglob:
+        - "{{ playbook_dir }}/minimal-config.yml"
+      tags: ['always']
+
+  roles:
+    - role: elliotweiser.osx-command-line-tools
+    - role: geerlingguy.mac.homebrew
+      tags: ['homebrew']
+    - role: geerlingguy.dotfiles
+      when: configure_dotfiles
+      tags: ['dotfiles']
+    - role: geerlingguy.mac.mas
+      when: mas_installed_apps or mas_installed_app_ids
+      tags: ['mas']
+    - role: geerlingguy.mac.dock
+      when: configure_dock
+      tags: ['dock']
+
+  tasks:
+    - import_tasks: tasks/sudoers.yml
+      when: configure_sudoers
+      tags: ['sudoers']
+
+    - import_tasks: tasks/terminal.yml
+      when: configure_terminal
+      tags: ['terminal']
+
+    - import_tasks: tasks/osx.yml
+      when: configure_osx
+      tags: ['osx']
+
+    - import_tasks: tasks/extra-packages.yml
+      tags: ['extra-packages']
+
+    - import_tasks: tasks/sublime-text.yml
+      when: configure_sublime
+      tags: ['sublime-text']
+
+
+
+    # todo: right now these two will fail if we haven't run VSCode once to create the 
+    # /Library/Application Support/Code directory
+
+    # - name: Create a default VSCode configuration
+    #   template:
+    #     src: templates/vscode-settings.json.j2
+    #     dest: /Users/{{ lookup('env', 'USER') }}/Library/Application Support/Code/User/settings.json
+    #     owner: "{{ lookup('env', 'USER') }}"
+    #     force: yes
+
+    # - name: Create a default VSCode keuybinding configuration
+    #   template:
+    #     src: templates/vscode-keybindings.json.j2
+    #     dest: /Users/{{ lookup('env', 'USER') }}/Library/Application Support/Code/User/keybindings.json
+    #     owner: "{{ lookup('env', 'USER') }}"
+    #     force: yes
+
+    # # Add something which ensures path is set here
+    # - name: Install VSCode extensions
+    #   shell: code --install-extension {{ item }}
+    #   with_items:
+    #     - ms-python.python
+    #     - shinichi-takii.sql-bigquery
+
+    # - git:
+    #     repo: https://github.com/asdf-vm/asdf.git
+    #     dest: "/Users/{{ lookup('env', 'USER') }}/.asdf"
+    #     version: v0.8.1
+
+    # - name: "Create a default asdf configuration"
+    #   template:
+    #     src: templates/.asdfrc.j2
+    #     dest: /Users/{{ lookup('env', 'USER') }}/.asdfrc
+    #     owner: "{{ lookup('env', 'USER') }}"
+    #     force: yes
+
+    # - name: "Install asdf plugins"
+    #   shell: |
+    #     source /Users/{{ lookup('env', 'USER') }}/.asdf/asdf.sh
+    #     asdf plugin-add {{ item }} || exit 0
+    #   with_items:
+    #     # - ruby
+    #     # - elixir
+    #     - nodejs
+    #     - python
+    #     # - erlang
+
+    # - name: "Install Default Python"
+    #   shell: |
+    #     source /Users/{{ lookup('env', 'USER') }}/.asdf/asdf.sh
+    #     asdf install python 3.10.0
+    #     asdf global python 3.10.0
+    #     pip3 install ansible
+    #     asdf reshim python
+
+    # - name: "Install Default Ruby"
+    #   shell: |
+    #     source /Users/{{ lookup('env', 'USER') }}/.asdf/asdf.sh
+    #     asdf install ruby 3.0.2
+    #     asdf global ruby 3.0.2
+    #     gem install bundler
+    #     gem install cocoapods
+    #     gem install rubocop
+    #     gem install solargraph
+
+    # - name: "Install default node"
+    #   shell: |
+    #     source /Users/{{ lookup('env', 'USER') }}/.asdf/asdf.sh
+    #     bash /Users/{{ lookup('env', 'USER') }}/.asdf/plugins/nodejs/bin/import-release-team-keyring
+    #     asdf install nodejs 16.4.2
+    #     asdf global nodejs 16.4.2
+
+    # - name: "Install default erlang"
+    #   shell: |
+    #     source /Users/{{ lookup('env', 'USER') }}/.asdf/asdf.sh
+    #     asdf install erlang 24.0.2
+    #     asdf global  erlang 24.0.2
+
+
+    # - name: "Install default elixir"
+    #   shell: |
+    #     source /Users/{{ lookup('env', 'USER') }}/.asdf/asdf.sh
+    #     asdf install elixir 1.12.3-otp-24
+    #     asdf global elixir 1.12.3-otp-24
+    #     mix local.hex --force
+
+    # - name: Install yarn packages
+    #   shell: yarn global add {{ item }}
+    #   with_items:
+    #     - react-native-cli
+    #     - create-react-app
+    #     - apollo
+    #     - generator-generator
+    #     - yo
+        
+    # - name: re-generate bins now we've installed some yarn packages
+    #   shell: asdf reshim nodejs
+        
+
+
+    - block:
+        - name: Run configured post-provision ansible task files.
+          include_tasks: "{{ outer_item }}"
+          loop_control:
+            loop_var: outer_item
+          with_fileglob: "{{ post_provision_tasks|default(omit) }}"
+      tags: ['post']
