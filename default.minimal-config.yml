@@ -41,6 +41,7 @@ dotfiles_files:
   - .bashrc
   - .exports
   - .functions
+  - .zprofile
 
 
 homebrew_installed_packages:
