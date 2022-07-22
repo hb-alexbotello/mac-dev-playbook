@@ -48,11 +48,57 @@
     #   when: configure_sublime
     #   tags: ['sublime-text']
 
-    - name: 3.6 upgrade pip, install pipenv
+    - name: 3.6 upgrade pip
       ansible.builtin.pip:
         name: pip
         executable: pip3.6
         extra_args: --upgrade
+      environment:
+        PYENV_VERSION: "{{ pyenv_python36_version }}"
+      when: configure_pyenv
+      tags: ['pyenv']
+
+    - name: 3.7 upgrade pip
+      ansible.builtin.pip:
+        name: pip
+        executable: pip3.7
+        extra_args: --upgrade
+      environment:
+        PYENV_VERSION: "{{ pyenv_python37_version }}"
+      when: configure_pyenv
+      tags: ['pyenv']
+
+    - name: 3.8 upgrade pip
+      ansible.builtin.pip:
+        name: pip
+        executable: pip3.8
+        extra_args: --upgrade
+      environment:
+        PYENV_VERSION: "{{ pyenv_python38_version }}"
+      when: configure_pyenv
+      tags: ['pyenv']
+
+    - name: 3.9 upgrade pip
+      ansible.builtin.pip:
+        name: pip
+        executable: pip3.9
+        extra_args: --upgrade
+      environment:
+        PYENV_VERSION: "{{ pyenv_python39_version }}"
+      when: configure_pyenv
+      tags: ['pyenv']
+
+    - name: 3.10 upgrade pip
+      ansible.builtin.pip:
+        name: pip
+        executable: pip3.10
+        extra_args: --upgrade
+      environment:
+        PYENV_VERSION: "{{ pyenv_python310_version }}"
+      when: configure_pyenv
+      tags: ['pyenv']
+
+    - name: 3.6 install pipenv
       ansible.builtin.pip:
         name: pipenv
         executable: pip3.6
@@ -61,11 +107,7 @@
       when: configure_pyenv
       tags: ['pyenv']
 
-    - name: 3.7 upgrade pip, install pipenv
-      ansible.builtin.pip:
-        name: pip
-        executable: pip3.7
-        extra_args: --upgrade
+    - name: 3.7 install pipenv
       ansible.builtin.pip:
         name: pipenv
         executable: pip3.7
@@ -74,11 +116,7 @@
       when: configure_pyenv
       tags: ['pyenv']
 
-    - name: 3.8 upgrade pip, install pipenv
-      ansible.builtin.pip:
-        name: pip
-        executable: pip3.8
-        extra_args: --upgrade
+    - name: 3.8 install pipenv
       ansible.builtin.pip:
         name: pipenv
         executable: pip3.8
@@ -87,11 +125,7 @@
       when: configure_pyenv
       tags: ['pyenv']
 
-    - name: 3.9 upgrade pip, install pipenv
-      ansible.builtin.pip:
-        name: pip
-        executable: pip3.9
-        extra_args: --upgrade
+    - name: 3.9 install pipenv
       ansible.builtin.pip:
         name: pipenv
         executable: pip3.9
@@ -100,11 +134,7 @@
       when: configure_pyenv
       tags: ['pyenv']
 
-    - name: 3.10 upgrade pip, install pipenv
-      ansible.builtin.pip:
-        name: pip
-        executable: pip3.10
-        extra_args: --upgrade
+    - name: 3.10 install pipenv
       ansible.builtin.pip:
         name: pipenv
         executable: pip3.10
