@@ -60,7 +60,6 @@ homebrew_installed_packages:
   # - sqlite
   # - mcrypt
   # - nmap
-  # - node
   # - nvm
   # - php
   # - ssh-copy-id
@@ -75,6 +74,9 @@ homebrew_installed_packages:
   # - tmux
   - jq
   - github/gh/gh
+  - pyenv
+  - node
+  - yarn
 
 
 
@@ -104,6 +106,7 @@ homebrew_cask_apps:
   # - vlc
   # - zoom
   # - postico
+  - postgres-unofficial
 
 
 # See `geerlingguy.mas` role documentation for usage instructions.
