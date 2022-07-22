@@ -78,6 +78,27 @@ homebrew_installed_packages:
   - node
   - yarn
 
+ansible_python_interpreter: "{{ ansible_playbook_python }}"
+configure_pyenv: true
+# pyenv_global: "{{ pyenv_python37_version }} system"
+pyenv_init_shell: false
+pyenv_python36_version: "3.6.15"
+pyenv_python37_version: "3.7.13"
+pyenv_python38_version: "3.8.13"
+pyenv_python39_version: "3.9.13"
+pyenv_python310_version: "3.10.5"
+pyenv_python_versions:
+  - "{{ pyenv_python36_version }}"
+  - "{{ pyenv_python37_version }}"
+  - "{{ pyenv_python38_version }}"
+  - "{{ pyenv_python39_version }}"
+  - "{{ pyenv_python310_version }}"
+pyenv_global: "{{ pyenv_python38_version }} system"
+pyenv_virtualenvwrapper: true
+pyenv_virtualenvwrapper_home: "{{ ansible_env.HOME }}/.virtualenvs"
+
+
+
 
 
 homebrew_taps:
