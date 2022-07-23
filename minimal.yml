@@ -179,7 +179,7 @@
     - name: create /usr/local/lib directory if it doesn't exist
       become: True
       file:
-        src: "/usr/local/lib/"
+        path: "/usr/local/lib/"
         state: directory
     - name: Create symlinks to 5 libraries from  /usr/local/bin
       become: True
