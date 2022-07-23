@@ -143,11 +143,54 @@
       when: configure_pyenv
       tags: ['pyenv']
 
+    # hack, install ansible on the new system python, so after the first time we run this,
+    # ansible is ready to go again, because pyenv resets the global python version
+    - name: 3.8 install pipenv
+      ansible.builtin.pip:
+        name: ansible
+        executable: pip3.8
+      environment:
+        PYENV_VERSION: "{{ pyenv_python38_version }}"
+      when: configure_pyenv
+      tags: ['pyenv']
+
     - name: "Add postgres.app to the path"
       copy:
         dest: "/etc/paths.d/postgresapp"
         content: /Applications/Postgres.app/Contents/Versions/latest/bin
       become: yes
+
+    # for the bees repo (yellow dashboard) we need weasyprint to install
+    # to get pyenv python versions to be able to install and run weasyprint, we need a few things to 
+    # be in the lib path, specifically we'll get a "fontconfig-1" error, when we run "weasyprint info"
+    # this isn't required on the homebrew python, because they specifically patch their python version to hack around it
+    # https://github.com/Homebrew/discussions/discussions/3424
+    # our solution came form 
+    # https://stackoverflow.com/questions/69097224/gobject-2-0-0-not-able-to-load-on-macbook
+    # we could also export DYLD_LIBRARY_PATH=/opt/homebrew/lib
+    # but the discussion on https://github.com/Homebrew/discussions/discussions/3424 pushed me slightly towards the 
+    # symlink option instead
+    # equivalent manual commands
+    # sudo ln -s /opt/homebrew/opt/glib/lib/libgobject-2.0.0.dylib /usr/local/lib/gobject-2.0
+    # sudo ln -s /opt/homebrew/opt/pango/lib/libpango-1.0.dylib /usr/local/lib/pango-1.0
+    # sudo ln -s /opt/homebrew/opt/harfbuzz/lib/libharfbuzz.dylib /usr/local/lib/harfbuzz
+    # sudo ln -s /opt/homebrew/opt/fontconfig/lib/libfontconfig.1.dylib /usr/local/lib/fontconfig-1
+    # sudo ln -s /opt/homebrew/opt/pango/lib/libpangoft2-1.0.dylib /usr/local/lib/pangoft2-1.0
+    - name: Create symlinks to 5 libraries from  /usr/local/bin
+      become: True
+      file:
+        src: "/opt/homebrew/opt/{{ item.source }}"
+        dest: "/usr/local/lib/{{ item.dest }}"
+        state: link
+      with_items:
+        - {source: glib/lib/libgobject-2.0.0.dylib     , dest: gobject-2.0}
+        - {source: pango/lib/libpango-1.0.dylib        , dest: pango-1.0}
+        - {source: harfbuzz/lib/libharfbuzz.dylib      , dest: harfbuzz}
+        - {source: fontconfig/lib/libfontconfig.1.dylib, dest: fontconfig-1}
+        - {source: pango/lib/libpangoft2-1.0.dylib     , dest: pangoft2-1.0}
+
+        # - {source: /opt/homebrew/opt/glib/lib/libgobject-2.0.0.dylib, dest: /usr/local/lib/gobject-2.0}
+
 
     # todo: right now these two will fail if we haven't run VSCode once to create the 
     # /Library/Application Support/Code directory

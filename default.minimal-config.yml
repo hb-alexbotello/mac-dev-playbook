@@ -41,6 +41,7 @@ dotfiles_files:
   - .bashrc
   - .exports
   - .functions
+  - .zshrc
   - .zprofile
 
 
@@ -77,6 +78,12 @@ homebrew_installed_packages:
   - pyenv
   - node
   - yarn
+
+  # required for yellow to run
+  - cairo
+  - pango
+  - libffi
+  - gdk-pixbuf
 
 ansible_python_interpreter: "{{ ansible_playbook_python }}"
 configure_pyenv: true
