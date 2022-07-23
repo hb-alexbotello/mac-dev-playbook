@@ -176,6 +176,11 @@
     # sudo ln -s /opt/homebrew/opt/harfbuzz/lib/libharfbuzz.dylib /usr/local/lib/harfbuzz
     # sudo ln -s /opt/homebrew/opt/fontconfig/lib/libfontconfig.1.dylib /usr/local/lib/fontconfig-1
     # sudo ln -s /opt/homebrew/opt/pango/lib/libpangoft2-1.0.dylib /usr/local/lib/pangoft2-1.0
+    - name: create /usr/local/lib directory if it doesn't exist
+      become: True
+      file:
+        src: "/usr/local/lib/"
+        state: directory
     - name: Create symlinks to 5 libraries from  /usr/local/bin
       become: True
       file:
