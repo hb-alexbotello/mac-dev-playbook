@@ -24,16 +24,18 @@ sudoers_custom_config: ''
 #   # Allow users in admin group to use sudo with no password.
 #   %admin ALL=(ALL) NOPASSWD: ALL
 
-dotfiles_repo: https://github.com/danny-hb/dotfiles.git
+dotfiles_repo: https://github.com/hb-alexbotello/.dotfiles.git
 dotfiles_repo_accept_hostkey: true
 dotfiles_repo_local_destination: ~/dotfiles
 dotfiles_files:
   - .zshrc
   - .gitignore
   - .inputrc
-  # - .osx
   - .macos
-  - .vimrc
+  - .bashrc
+  - .bash_profile
+  - .config
+  - iterm2
 
 homebrew_installed_packages:
   # - ansible # Installed via Pip.
@@ -62,13 +64,11 @@ homebrew_installed_packages:
   - pv
   - wget
   - wrk
-  - zsh-history-substring-search
-
-
   - tmux
   - jq
-
-
+  - withgraphite/tap/graphite
+  - neovim
+  - ripgrep
 
 homebrew_taps:
   - homebrew/core
@@ -78,17 +78,11 @@ homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   - chromedriver
   - docker
-  - dropbox
   - firefox
   - google-chrome
-  - handbrake
-  - licecap
-  - sequel-ace
   - slack
-  - sublime-text
   - transmit
   - vagrant
-  
   - google-cloud-sdk
   - iterm2
   - ngrok
