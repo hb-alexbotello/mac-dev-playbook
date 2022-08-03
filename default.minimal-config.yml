@@ -138,6 +138,8 @@ homebrew_cask_apps:
   - zoom
   - postico
   - postgres-unofficial
+  - warp
+  - karabiner-elements
 
 
 # See `geerlingguy.mas` role documentation for usage instructions.
