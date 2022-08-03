@@ -85,6 +85,9 @@ homebrew_installed_packages:
   - libffi
   - gdk-pixbuf
 
+  # required for green
+  - gdal
+
 ansible_python_interpreter: "{{ ansible_playbook_python }}"
 configure_pyenv: true
 # pyenv_global: "{{ pyenv_python37_version }} system"
@@ -103,9 +106,6 @@ pyenv_python_versions:
 pyenv_global: "{{ pyenv_python38_version }} system"
 pyenv_virtualenvwrapper: true
 pyenv_virtualenvwrapper_home: "{{ ansible_env.HOME }}/.virtualenvs"
-
-
-
 
 
 homebrew_taps:

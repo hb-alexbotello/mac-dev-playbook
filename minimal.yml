@@ -171,11 +171,31 @@
     # but the discussion on https://github.com/Homebrew/discussions/discussions/3424 pushed me slightly towards the 
     # symlink option instead
     # equivalent manual commands
+    # REQUIRES: brew install the following, which we setup in the default config here.
+    # - cairo
+    # - pango
+    # - libffi
+    # - gdk-pixbuf
     # sudo ln -s /opt/homebrew/opt/glib/lib/libgobject-2.0.0.dylib /usr/local/lib/gobject-2.0
     # sudo ln -s /opt/homebrew/opt/pango/lib/libpango-1.0.dylib /usr/local/lib/pango-1.0
     # sudo ln -s /opt/homebrew/opt/harfbuzz/lib/libharfbuzz.dylib /usr/local/lib/harfbuzz
     # sudo ln -s /opt/homebrew/opt/fontconfig/lib/libfontconfig.1.dylib /usr/local/lib/fontconfig-1
     # sudo ln -s /opt/homebrew/opt/pango/lib/libpangoft2-1.0.dylib /usr/local/lib/pangoft2-1.0
+
+    # not sure which form is correct, with or without the  .dylib on the destination
+    # django picks it up properly if we include the .dylib version, but none of the ones above
+    # used .dylib, so :shrug:
+    #
+    # REQUIRES: brew install gdal, which we setup in the default config here.
+    # sudo ln -s  /opt/homebrew/opt/gdal/lib/libgdal.dylib /usr/local/lib/libgdal
+    # sudo ln -s  /opt/homebrew/opt/geos/lib/libgeos_c.dylib /usr/local/lib/libgeos_c
+    # sudo ln -s  /opt/homebrew/opt/gdal/lib/libgdal.dylib /usr/local/lib/libgdal.dylib
+    # sudo ln -s  /opt/homebrew/opt/geos/lib/libgeos_c.dylib /usr/local/lib/libgeos_c.dylib
+    #
+    # The alternative is to set the following in your django settings file (note settings, not env variable)
+    # GDAL_LIBRARY_PATH = "/opt/homebrew/lib/libgdal.dylib"
+    # GEOS_LIBRARY_PATH = "/opt/homebrew/lib/libgeos_c.dylib"
+    
     - name: create /usr/local/lib directory if it doesn't exist
       become: True
       file:
@@ -193,8 +213,13 @@
         - {source: harfbuzz/lib/libharfbuzz.dylib      , dest: harfbuzz}
         - {source: fontconfig/lib/libfontconfig.1.dylib, dest: fontconfig-1}
         - {source: pango/lib/libpangoft2-1.0.dylib     , dest: pangoft2-1.0}
-
-        # - {source: /opt/homebrew/opt/glib/lib/libgobject-2.0.0.dylib, dest: /usr/local/lib/gobject-2.0}
+        # not sure which form is correct, with or without the  .dylib on the destination
+        # django picks it up properly if we include the .dylib version, but none of the ones above
+        # used .dylib, so :shrug:
+        - {source: gdal/lib/libgdal.dylib              , dest: libgdal}
+        - {source: gdal/lib/libgdal.dylib              , dest: libgdal.dylib}
+        - {source: geos/lib/libgeos_c.dylib            , dest: libgeos_c}
+        - {source: geos/lib/libgeos_c.dylib            , dest: libgeos_cdylib}
 
 
     # todo: right now these two will fail if we haven't run VSCode once to create the 
