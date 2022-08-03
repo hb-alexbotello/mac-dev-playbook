@@ -24,7 +24,7 @@ sudoers_custom_config: ''
 #   # Allow users in admin group to use sudo with no password.
 #   %admin ALL=(ALL) NOPASSWD: ALL
 
-dotfiles_repo: https://github.com/danny-hb/minimal-dotfiles.git
+dotfiles_repo: https://github.com/hb-alexbotello/.dotfiles.git
 dotfiles_repo_accept_hostkey: true
 dotfiles_repo_local_destination: ~/dotfiles
 dotfiles_repo_version: main
@@ -43,18 +43,20 @@ dotfiles_files:
   - .functions
   - .zshrc
   - .zprofile
+  - .config
+  - iterm2
 
 
 homebrew_installed_packages:
   # - ansible # Installed via Pip.
   # - autoconf
-  # - bash-completion
+  - bash-completion
   # - doxygen
   # - gettext
   # - gifsicle
-  # - git
-  # - go
-  # - gpg
+  - git
+  - go
+  - gpg
   # - httpie
   # - iperf
   # - libevent
@@ -71,13 +73,15 @@ homebrew_installed_packages:
   # - wget
   # - wrk
   # - zsh-history-substring-search
-
-  # - tmux
+  - tmux
   - jq
   - github/gh/gh
   - pyenv
   - node
   - yarn
+  - withgraphite/tap/graphite
+  - neovim
+  - ripgrep
 
   # required for yellow to run
   - cairo
@@ -114,7 +118,7 @@ homebrew_taps:
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
-  # - chromedriver
+  - chromedriver
   - docker
   # - dropbox
   # - firefox
@@ -126,14 +130,13 @@ homebrew_cask_apps:
   # - sublime-text
   # - transmit
   # - vagrant
-  
   - google-cloud-sdk
   - iterm2
-  # - ngrok
+  - ngrok
   - visual-studio-code
   # - vlc
-  # - zoom
-  # - postico
+  - zoom
+  - postico
   - postgres-unofficial
 
 
