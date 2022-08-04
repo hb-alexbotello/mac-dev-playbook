@@ -1,7 +1,7 @@
 ---
 downloads: ~/.ansible-downloads/
 
-configure_dotfiles: true
+configure_dotfiles: false
 configure_terminal: false
 configure_osx: false
 
@@ -27,7 +27,7 @@ sudoers_custom_config: ''
 dotfiles_repo: https://github.com/hb-alexbotello/.dotfiles.git
 dotfiles_repo_accept_hostkey: true
 dotfiles_repo_local_destination: ~/dotfiles
-dotfiles_repo_version: main
+dotfiles_repo_version: master
 dotfiles_files:
   # - .zshrc
   # - .gitignore
@@ -41,8 +41,6 @@ dotfiles_files:
   - .bashrc
   - .exports
   - .functions
-  - .zshrc
-  - .zprofile
   - .config
   - iterm2
 
@@ -82,6 +80,7 @@ homebrew_installed_packages:
   - withgraphite/tap/graphite
   - neovim
   - ripgrep
+  - redis
 
   # required for yellow to run
   - cairo
@@ -120,21 +119,13 @@ homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
   - chromedriver
   - docker
-  # - dropbox
-  # - firefox
   - google-chrome
-  # - handbrake
-  # - licecap
-  # - sequel-ace
-  # - slack
-  # - sublime-text
-  # - transmit
-  # - vagrant
+  - slack
   - google-cloud-sdk
   - iterm2
   - ngrok
   - visual-studio-code
-  # - vlc
+  - notion
   - zoom
   - postico
   - postgres-unofficial
@@ -161,11 +152,23 @@ gem_packages: []
 # - name: bundler
 #   state: present # present/absent/latest, default: present
 #   version: "~> 1.15.1" # default: N/A
-npm_packages: []
+npm_packages:
+  - name: typescript
+    state: present
+  # python language server
+  - name: pyright
+    state: present
+  # typescript language server
+  - name: typescript-language-server
+    state: present
+
 # - name: webpack
 #   state: present # present/absent/latest, default: present
 #   version: "^2.6" # default: N/A
-pip_packages: []
+pip_packages:
+  - name: virtualenvwrapper
+    state: present
+
 # - name: mkdocs
 #   state: present # present/absent/latest, default: present
 #   version: "0.16.3" # default: N/A
